@@ -1,0 +1,29 @@
+digraph DocumentWorkflow {
+    rankdir=LR;
+    node [shape=circle, style=filled, fillcolor=lightgrey];
+
+    draft [URL="#draft"];
+    review [URL="#review"];
+    corrections [URL="#corrections"];
+    approved [URL="#approved"];
+    signed [URL="#signed"];
+    published [URL="#published"];
+    archived [URL="#archived"];
+    reopened [URL="#reopened"];
+    rejected [URL="#rejected"];
+    deleted [URL="#deleted"];
+    retracted [URL="#retracted"];
+
+    draft -> review [label="submit", URL="#submit"];
+    review -> corrections [label="request_changes", URL="#request_changes"];
+    corrections -> review [label="resubmit", URL="#resubmit"];
+    review -> approved [label="approve", URL="#approve"];
+    approved -> signed [label="sign", URL="#sign"];
+    signed -> published [label="publish", URL="#publish"];
+    published -> archived [label="archive", URL="#archive"];
+    archived -> reopened [label="reopen", URL="#reopen"];
+    draft -> deleted [label="delete", URL="#delete"];
+    reopened -> deleted [label="delete", URL="#delete"];
+    review -> rejected [label="reject", URL="#reject"];
+    published -> retracted [label="retract", URL="#retract"];
+}

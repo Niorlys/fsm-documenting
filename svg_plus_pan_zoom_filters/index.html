@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FSM Diagram - Pan & Zoom</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #svg-container { border: 1px solid #ccc; overflow: hidden; }
+    #controls { margin-bottom: 1em; }
+    #info-panel {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f0f0f0;
+      border-left: 4px solid #ccc;
+    }
+    #info-panel h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+  <h1>FSM with Pan, Zoom, and Filter</h1>
+
+  <div id="controls">
+    🔍 <input type="text" id="search" placeholder="Type state or transition..." />
+  </div>
+
+  <div id="svg-container">
+    <object id="fsm" data="fsm.svg" type="image/svg+xml" width="100%" height="600"></object>
+  </div>
+
+  <div id="info-panel">
+    <h2>ℹ️ Click a node or label</h2>
+    <p>Doc will appear here.</p>
+  </div>
+
+  <script src="lib/svg-pan-zoom.min.js"></script>
+
+  <script>
+    const objectEl = document.getElementById('fsm');
+  
+    objectEl.addEventListener('load', function () {
+      const svgDoc = objectEl.contentDocument;
+      const infoPanel = document.getElementById('info-panel');
+      const searchInput = document.getElementById('search');
+  
+      // 1. Enable zoom/pan
+      const panZoom = svgPanZoom(svgDoc.documentElement, {
+        zoomEnabled: true,
+        controlIconsEnabled: true,
+        fit: true,
+        center: true
+      });
+  
+      // 2. Load docs
+      fetch('fsm_docs.json')
+        .then(res => res.json())
+        .then(docs => {
+          const anchors = svgDoc.querySelectorAll('a');
+  
+          anchors.forEach(a => {
+            const href = a.getAttribute('xlink:href');
+            const key = href?.replace('#', '');
+  
+            if (!key) return;
+  
+            a.style.cursor = 'pointer';
+  
+            // Click to show doc
+            a.addEventListener('click', function (e) {
+              e.preventDefault();
+  
+              const doc =
+                docs.states[key] ||
+                docs.transitions[key] ||
+                'No documentation available.';
+  
+              const title = docs.states[key]
+                ? `${key.toUpperCase()} (State)`
+                : `${key}() (Transition)`;
+  
+              infoPanel.innerHTML = `<h2>${title}</h2><p>${doc}</p>`;
+              console.log(`[✅ Clicked]: ${key}`);
+            });
+          });
+  
+          // 3. Enable search/filter
+          searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+  
+            anchors.forEach(a => {
+              const href = a.getAttribute('xlink:href');
+              const key = href?.replace('#', '');
+              const text = key.toLowerCase();
+              const node = a.closest('g');
+  
+              if (text.includes(query)) {
+                node?.setAttribute('visibility', 'visible');
+              } else {
+                node?.setAttribute('visibility', query ? 'hidden' : 'visible');
+              }
+            });
+          });
+        });
+    });
+  </script>
+  
+  
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "states": {
+    "draft": "Initial editable state of the document.",
+    "review": "The document is under review by peers or supervisors.",
+    "corrections": "Requested changes are being made to the document.",
+    "approved": "The document has been approved and is awaiting signature.",
+    "signed": "The document has been officially signed.",
+    "published": "The signed document has been published.",
+    "archived": "The document has been archived.",
+    "reopened": "An archived document has been reopened for modification.",
+    "rejected": "The document was rejected during review.",
+    "deleted": "The document was deleted and is no longer accessible.",
+    "retracted": "A published document was pulled back from public view."
+  },
+  "transitions": {
+    "submit": "Submit the document from draft to review.",
+    "request_changes": "Request changes during review and send back to corrections.",
+    "resubmit": "Resubmit a corrected document back into review.",
+    "approve": "Approve the document after review.",
+    "sign": "Sign the approved document.",
+    "publish": "Make the signed document public.",
+    "archive": "Archive the published document for record-keeping.",
+    "reopen": "Reopen an archived document for updates.",
+    "delete": "Permanently remove a draft or reopened document.",
+    "reject": "Reject a document during review.",
+    "retract": "Retract a published document due to errors or disputes."
+  }
+}
