@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive FSM Diagram</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 1em;
+    }
+    #info-panel {
+      margin-top: 30px;
+      padding: 15px;
+      border-left: 4px solid #ccc;
+      background: #f9f9f9;
+    }
+    #info-panel h2 {
+      margin-top: 0;
+      color: #333366;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interactive FSM Diagram</h1>
+
+  <!-- SVG loaded inline -->
+  <object id="fsm" data="fsm.svg" type="image/svg+xml" width="800" height="400"></object>
+
+  <!-- Inline dynamic panel -->
+  <div id="info-panel">
+    <h2>ℹ️ Click a state or transition</h2>
+    <p>The documentation for the selected item will appear here.</p>
+  </div>
+
+  <script>
+    // Wait for the SVG to load
+    document.getElementById('fsm').addEventListener('load', function () {
+      const svgDoc = this.contentDocument;
+
+      fetch('fsm_docs.json')
+        .then(response => response.json())
+        .then(docs => {
+          const infoPanel = document.getElementById('info-panel');
+
+          // Attach handlers to state and transition nodes
+          const allNodes = svgDoc.querySelectorAll('a');
+
+          allNodes.forEach(anchor => {
+            const href = anchor.getAttribute('xlink:href');
+            if (!href || !href.startsWith('#')) return;
+
+            const key = href.slice(1); // remove "#"
+
+            anchor.addEventListener('click', e => {
+              e.preventDefault(); // prevent scroll
+
+              const doc =
+                docs.states[key] ||
+                docs.transitions[key] ||
+                'No documentation available for this item.';
+
+              const title = docs.states[key] ? key.toUpperCase() + ' (State)' : key + '() (Transition)';
+
+              infoPanel.innerHTML = `<h2>${title}</h2><p>${doc}</p>`;
+            });
+          });
+        });
+    });
+  </script>
+</body>
+</html>

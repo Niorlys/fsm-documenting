@@ -1,0 +1,13 @@
+{
+  "states": {
+    "solid": "In the solid state, matter has a fixed shape and volume. Particles are tightly packed and vibrate in place.",
+    "liquid": "In the liquid state, matter has a definite volume but takes the shape of its container.",
+    "gas": "In the gas state, matter has no fixed shape or volume. Particles move freely."
+  },
+  "transitions": {
+    "melt": "Transition from solid to liquid.\n        \n        This simulates melting, where a solid absorbs heat and becomes a liquid.",
+    "freeze": "Transition from liquid to solid.\n        \n        This simulates freezing, where a liquid loses heat and solidifies.",
+    "evaporate": "Transition from liquid to gas.\n        \n        This simulates evaporation, where liquid molecules gain enough energy to become gas.",
+    "condense": "Transition from gas to liquid.\n        \n        This simulates condensation, where gas cools and becomes liquid."
+  }
+}

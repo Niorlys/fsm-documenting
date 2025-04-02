@@ -1,0 +1,13 @@
+digraph FSM {
+    rankdir=LR;
+    node [shape = circle, style=filled, fillcolor=lightgrey];
+
+    solid [label="Solid", URL="#solid", tooltip="Click for Solid state docs"];
+    liquid [label="Liquid", URL="#liquid", tooltip="Click for Liquid state docs"];
+    gas [label="Gas", URL="#gas", tooltip="Click for Gas state docs"];
+
+    solid -> liquid [label = "melt"];
+    liquid -> gas [label = "evaporate"];
+    gas -> liquid [label = "condense"];
+    liquid -> solid [label = "freeze"];
+}
